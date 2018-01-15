@@ -1,0 +1,137 @@
+#include <QTRSensors.h>
+#define NUM_SENSORS  6
+#define EMITTER_PIN 8
+
+#define PWMa 10 // sağ motor hız değişkeni
+#define a1 7 // sağ motor ileri/geri
+#define a2 8 //sağ motor ileri/geri
+
+#define PWMb 9 // sağ motor hız değişkeni
+#define b1 6 // sağ motor ileri/ger
+#define b2 5 //sağ motor ileri/geri
+
+
+QTRSensorsAnalog qtrrc((unsigned char[]) {  A0, A1, A2, A3, A4, A5 } , NUM_SENSORS, EMITTER_PIN);
+unsigned int sensorValues[NUM_SENSORS];
+
+void setup()
+{
+  Serial.begin(9600);
+  
+  pinMode(a1, OUTPUT);
+  pinMode(a2, OUTPUT);
+  pinMode(PWMa, OUTPUT);
+  pinMode(b1, OUTPUT);
+  pinMode(b2, OUTPUT);
+  pinMode(PWMb, OUTPUT);
+  
+
+  int i;
+ 
+  for (int i = 0; i < 250; i++)
+  {
+    qtrrc.calibrate();
+    delay(10);  
+  
+  }
+  delay(1000);
+
+ 
+}
+void loop()
+{
+  unsigned int sensors[6];
+  int position = qtrrc.readLine(sensors);
+  Serial.println(position);
+
+
+  if(position<200)
+    {
+   digitalWrite(a1, HIGH);
+  digitalWrite(a2, LOW);
+  analogWrite(PWMa,100);                                                                                                                                           
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, LOW);
+  analogWrite(PWMb,0);
+    }
+  else  if(position<800)
+    {
+   digitalWrite(a1, HIGH);
+  digitalWrite(a2, LOW);
+  analogWrite(PWMa,120);
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, LOW);
+  analogWrite(PWMb,30);
+    }
+    else if(position<1300)
+     {
+   digitalWrite(a1, HIGH);
+  digitalWrite(a2, LOW);
+  analogWrite(PWMa,150);
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, LOW);
+  analogWrite(PWMb,50);
+    
+    }
+      else if(position<1800)
+   {
+     digitalWrite(a1, HIGH);
+  digitalWrite(a2, LOW);
+  analogWrite(PWMa,170);
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, LOW);
+  analogWrite(PWMb,70);
+    }
+     else if(position>2300 || position<2800)
+     {
+  digitalWrite(a1, HIGH);
+  digitalWrite(a2, LOW);
+  analogWrite(PWMa,200);
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, LOW);
+  analogWrite(PWMb,200);
+   }
+    else if(position<3300)
+  {
+  digitalWrite(a1, HIGH);
+  digitalWrite(a2, LOW);
+   analogWrite(PWMa,70);
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, LOW);
+    analogWrite(PWMb,170);
+ 
+    
+  }
+  else  if(position<3800)
+  { 
+  digitalWrite(a1, HIGH);
+  digitalWrite(a2, LOW);
+   analogWrite(PWMa,50);
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, LOW);
+   analogWrite(PWMb,150);
+  
+  }
+
+else if(position<4300 )
+
+  { 
+  digitalWrite(a1, HIGH);
+  digitalWrite(a2, LOW);
+  analogWrite(PWMa,30);
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, LOW);  
+  analogWrite(PWMb,120);
+  }
+
+else if(position<4800 )
+
+  { 
+  digitalWrite(a1, HIGH);
+  digitalWrite(a2, LOW);
+  analogWrite(PWMa,0);
+  digitalWrite(b1, HIGH);
+  digitalWrite(b2, LOW);  
+  analogWrite(PWMb,100);
+  }
+}
